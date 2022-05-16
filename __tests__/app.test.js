@@ -7,7 +7,7 @@ const testData = require("../db/data/test-data");
 beforeEach(() => seed(testData));
 
 afterAll(() => {
-  db.end();
+  if (db.end) db.end();
 });
 
 // TASK 3
@@ -17,10 +17,10 @@ describe("GET /api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then((res) => {
-        const catogories = res.body;
-        expect(catogories).toBeInstanceOf(Array);
-        expect(catogories).toHaveLength(4);
-        catogories.forEach((catogory) => {
+        const { categories } = res.body;
+        expect(categories).toBeInstanceOf(Array);
+        expect(categories).toHaveLength(4);
+        categories.forEach((catogory) => {
           expect(catogory).toMatchObject({
             slug: expect.any(String),
             description: expect.any(String),
