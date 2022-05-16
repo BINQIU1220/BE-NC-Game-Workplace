@@ -6,13 +6,9 @@ We will be building an API for the purpose of accessing application data program
 
 Your database will be PSQL, and you will interact with it using [node-postgres](https://node-postgres.com/).
 
-## Kanban
+## Set up your own .env files before
 
-### Link to your Trello Board here: https://trello.com/b/gBtX4GN3/be-nc-games
-
-To keep track of the tasks involved in this project we're going to use a kanban board. Ensure that you work on one _ticket_ at time. You can click on the ticket to find out more information about what is required for the feature. A ticket is not considered complete unless both the happy path and errors response are handled. You can make use of the checklist on each ticket to keep track of the errors you want to handle. You can also make use of [error-handling.md](error-handling.md) to consider the error codes we may wish to respond with.
-
-**Please ensure you work through the tickets in numerical order.**
+You will need to create two .env files when you clone this rep: .env.test and .env.development in order to successfully connect to the two databases locally. Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment (see /db/setup.sql for the database names). Double check that these .env files are .gitignored :).
 
 ## Git Branching and Pull Requests
 
