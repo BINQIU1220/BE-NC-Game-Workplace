@@ -7,7 +7,7 @@ const testData = require("../db/data/test-data");
 beforeEach(() => seed(testData));
 
 afterAll(() => {
-  if (db.end) db.end();
+  db.end();
 });
 
 // TASK 3
