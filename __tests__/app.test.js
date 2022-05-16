@@ -29,6 +29,11 @@ describe("GET /api/categories", () => {
       });
   });
   it("status: 404, responds with bad request message when passed in an incorrect request.", () => {
-    return request(app).get("/api/categoryyy").expect(404);
+    return request(app)
+      .get("/api/categoryyy")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("bad path");
+      });
   });
 });

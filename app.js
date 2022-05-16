@@ -8,8 +8,8 @@ app.use(express.json());
 // TASK 3
 app.get("/api/categories", getAllCatogories);
 
-app.use((err, req, res, next) => {
-  res.status(404).send("bad request");
+app.all("/*", (req, res, next) => {
+  res.status(404).send({ msg: "bad path" });
 });
 
 app.listen(9090, (err) => {
