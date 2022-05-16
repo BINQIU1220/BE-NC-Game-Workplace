@@ -7,7 +7,8 @@
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev": "nodemon ./app.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "husky": "^7.0.0",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
+    "nodemon": "^2.0.16",
     "pg-format": "^1.0.4"
   },
   "devDependencies": {
