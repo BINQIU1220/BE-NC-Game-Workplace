@@ -40,12 +40,13 @@ describe("GET /api/categories", () => {
 
 // TASK 4
 
-describe.only("GET /api/reviews/:review_id", () => {
-  xit("status:200, responds with a review object corresponding the review id.", () => {
+describe("GET /api/reviews/:review_id", () => {
+  it("status:200, responds with a review object corresponding the review id.", () => {
     return request(app)
       .get(`/api/reviews/2`)
       .expect(200)
       .then(({ body }) => {
+        console.log(body);
         expect(body.reviews).toEqual([
           {
             review_id: 2,
@@ -62,8 +63,7 @@ describe.only("GET /api/reviews/:review_id", () => {
         ]);
       });
   });
-
-  xit("status: 404, responds with review not found message when passed in an id without review.", () => {
+  it("status: 404, responds with review not found message when passed in an id without review.", () => {
     return request(app)
       .get("/api/reviews/666")
       .expect(404)
@@ -71,7 +71,6 @@ describe.only("GET /api/reviews/:review_id", () => {
         expect(res.body.msg).toBe("review not found");
       });
   });
-
   it("status: 400, responds with invalid request message when passed in invalid id ou somethings else.", () => {
     return request(app)
       .get("/api/reviews/banana")

@@ -1,16 +1,15 @@
 const express = require("express");
 const app = express();
 
-const {
-  getAllCatogories,
-  getAllReview,
-} = require("./controllers/games-controller");
+const { getAllCatogories } = require("./controllers/categories-controller");
+
+const { getReviewById } = require("./controllers/reviews-controller");
 
 // TASK 3
 app.get("/api/categories", getAllCatogories);
 
 // TASK 4
-app.get("/api/reviews/:review_id", getAllReview);
+app.get("/api/reviews/:review_id", getReviewById);
 
 app.use((err, req, res, next) => {
   if (err.code === "42703") {
