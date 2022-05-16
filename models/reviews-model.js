@@ -6,7 +6,7 @@ exports.fetchReviewById = (id) => {
     .query(`SELECT * FROM reviews WHERE review_id = ${id};`)
     .then((data) => {
       if (!data.rows.length) {
-        return Promise.reject({ status: 404, msg: "review not found" });
+        return Promise.reject({ status: 404, msg: "Not Found" });
       }
       return data.rows;
     });

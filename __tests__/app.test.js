@@ -28,12 +28,12 @@ describe("GET /api/categories", () => {
         });
       });
   });
-  it("status: 404, responds with bad path message when passed in an incorrect request.", () => {
+  it("status: 400, responds with bad path message when passed in an incorrect request.", () => {
     return request(app)
       .get("/api/categoryyy")
-      .expect(404)
+      .expect(400)
       .then((res) => {
-        expect(res.body.msg).toBe("bad path");
+        expect(res.body.msg).toBe("Bad Path");
       });
   });
 });
@@ -46,7 +46,6 @@ describe("GET /api/reviews/:review_id", () => {
       .get(`/api/reviews/2`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.reviews).toEqual([
           {
             review_id: 2,
@@ -68,7 +67,7 @@ describe("GET /api/reviews/:review_id", () => {
       .get("/api/reviews/666")
       .expect(404)
       .then((res) => {
-        expect(res.body.msg).toBe("review not found");
+        expect(res.body.msg).toBe("Not Found");
       });
   });
   it("status: 400, responds with invalid request message when passed in invalid id ou somethings else.", () => {
@@ -76,7 +75,7 @@ describe("GET /api/reviews/:review_id", () => {
       .get("/api/reviews/banana")
       .expect(400)
       .then((res) => {
-        expect(res.body.msg).toBe("invalid request");
+        expect(res.body.msg).toBe("Bad Request");
       });
   });
 });
