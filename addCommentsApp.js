@@ -3,8 +3,6 @@ const app = express();
 
 const { addComments } = require("./controllers/addComments-controller");
 
-app.use(express.json());
-
 // TASK 7
 app.get("/api/reviews/:review_id", addComments);
 

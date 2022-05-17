@@ -1,5 +1,4 @@
 const db = require("../db/connection");
-const format = require("pg-format");
 
 // TASK 7
 exports.fetchCommentCount = (reviewId) => {

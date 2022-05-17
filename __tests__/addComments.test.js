@@ -31,7 +31,7 @@ describe("GET /api/reviews/:review_id", () => {
         expect(body.msg).toBe("Bad Path");
       });
   });
-  it("status: 404, responds with Not Found message when passed in an id without review.", () => {
+  it("status: 404, responds with 'Not Found' message when passed in an id without review.", () => {
     return request(app)
       .get("/api/reviews/666")
       .expect(404)
