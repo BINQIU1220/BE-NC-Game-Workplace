@@ -17,7 +17,6 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.users).toBeInstanceOf(Array);
         expect(body.users).toHaveLength(4);
         body.users.forEach((user) => {
