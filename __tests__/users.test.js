@@ -12,7 +12,7 @@ afterAll(() => {
 
 // Task 6
 describe("GET /api/users", () => {
-  it("status:200, should respond withan array of user objects.", () => {
+  it("status:200, should respond with an array of user objects.", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
