@@ -8,6 +8,8 @@ const {
   patchVotesById,
 } = require("./controllers/reviews-controller");
 
+const { getAllUsers } = require("./controllers/users-controller");
+
 app.use(express.json());
 
 // TASK 3
@@ -18,6 +20,9 @@ app.get("/api/reviews/:review_id", getReviewById);
 
 // TASK 5
 app.patch("/api/reviews/:review_id", patchVotesById);
+
+// TASK 6
+app.get("/api/users", getAllUsers);
 
 //Bad Path Error
 app.all("/*", (req, res, next) => {
