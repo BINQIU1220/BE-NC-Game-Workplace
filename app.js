@@ -19,17 +19,17 @@ app.get("/api/reviews/:review_id", getReviewById);
 // TASK 5
 app.patch("/api/reviews/:review_id", patchVotesById);
 
-//Bad Path Erro
+//Bad Path Error
 app.all("/*", (req, res, next) => {
   res.status(400).send({ msg: "Bad Path" });
 });
-// PSQL Erros
+// PSQL Errors
 app.use((err, req, res, next) => {
   if (err.code === "42703") {
     res.status(400).send({ msg: "Bad Request" });
   } else next(err);
 });
-//Custom Erros
+//Custom Errors
 app.use((err, req, res, next) => {
   res.status(404).send({ msg: err.msg });
 });

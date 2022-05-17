@@ -53,7 +53,7 @@ describe("GET /api/reviews/:review_id", () => {
 });
 
 // Task 5
-describe.only("PATCH /api/reviews/:review_id", () => {
+describe("PATCH /api/reviews/:review_id", () => {
   it("status:200, should respond with the updated review object when passed a positive voteInfo.", () => {
     const voteInfo = {
       inc_votes: 1,
@@ -66,7 +66,7 @@ describe.only("PATCH /api/reviews/:review_id", () => {
         expect(body.review.votes).toBe(6);
       });
   });
-  it("status:200, responds with the updated review when passed in a nagetive voteInfo.", () => {
+  it("status:200, responds with the updated review when passed in a negative voteInfo.", () => {
     const voteInfo = {
       inc_votes: -2,
     };
