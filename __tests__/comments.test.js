@@ -20,14 +20,16 @@ describe("GET /api/reviews/:review_id/comments", () => {
         expect(body.comments).toBeInstanceOf(Array);
         expect(body.comments).toHaveLength(3);
         body.comments.forEach((comment) => {
-          expect(comment).toMatchObject({
-            comment_id: expect.any(Number),
-            body: expect.any(String),
-            review_id: expect.any(Number),
-            author: expect.any(String),
-            votes: expect.any(Number),
-            created_at: expect.any(String),
-          });
+          expect(comment).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              body: expect.any(String),
+              review_id: expect.any(Number),
+              author: expect.any(String),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+            })
+          );
         });
       });
   });
