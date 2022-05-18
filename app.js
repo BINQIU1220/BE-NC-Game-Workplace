@@ -37,6 +37,7 @@ app.get("/api/reviews/:review_id/comments", getCommentsById);
 app.all("/*", (req, res, next) => {
   res.status(400).send({ msg: "Bad Path" });
 });
+
 // PSQL Errors
 app.use((err, req, res, next) => {
   if (err.code === "42703") {
@@ -45,13 +46,6 @@ app.use((err, req, res, next) => {
 });
 
 //Custom Errors
-
-app.use((err, req, res, next) => {
-  if (err.status === 200) {
-    res.status(200).send([]);
-  } else next(err);
-});
-
 app.use((err, req, res, next) => {
   res.status(404).send({ msg: err.msg });
 });
