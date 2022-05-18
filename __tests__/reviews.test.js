@@ -30,6 +30,7 @@ describe("GET /api/reviews/:review_id", () => {
             category: "dexterity",
             created_at: "2021-01-18T10:01:41.251Z",
             votes: 5,
+            comment_count: "3",
           },
         ]);
       });
@@ -121,6 +122,40 @@ describe("PATCH /api/reviews/:review_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad Request");
+      });
+  });
+});
+
+// TASK 8
+describe("GET /api/reviews", () => {
+  it("Status: 200, respondes with a reviews array of review objects, each of which should have the required properties and be sorted by date in descending order.", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(13);
+        expect(body.reviews).toBeSortedBy("created_at", { descending: true });
+        body.reviews.forEach((review) => {
+          expect(review).toMatchObject({
+            owner: expect.any(String),
+            title: expect.any(String),
+            review_id: expect.any(Number),
+            category: expect.any(String),
+            review_img_url: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            comment_count: expect.any(String),
+          });
+        });
+      });
+  });
+  it("status: 400, responds with 'Bad Path' message when passed in an incorrect request.", () => {
+    return request(app)
+      .get("/api/reviewsssssss")
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("Bad Path");
       });
   });
 });

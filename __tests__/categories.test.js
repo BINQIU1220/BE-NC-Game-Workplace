@@ -28,7 +28,7 @@ describe("GET /api/categories", () => {
         });
       });
   });
-  it("status: 400, responds with bad path message when passed in an incorrect request.", () => {
+  it("status: 400, responds with 'Bad Path' message when passed in an incorrect request.", () => {
     return request(app)
       .get("/api/categoryyy")
       .expect(400)

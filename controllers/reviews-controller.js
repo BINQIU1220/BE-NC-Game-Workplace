@@ -1,4 +1,8 @@
-const { fetchReviewById, updateVotesById } = require("../models/reviews-model");
+const {
+  fetchReviewById,
+  updateVotesById,
+  fetchAllReviews,
+} = require("../models/reviews-model");
 
 // TASK 4
 exports.getReviewById = (req, res, next) => {
@@ -18,8 +22,18 @@ exports.patchVotesById = (req, res, next) => {
   const incVotes = req.body.inc_votes;
   updateVotesById(reviewId, incVotes)
     .then((data) => {
-      console.log(data);
       res.status(200).send({ review: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+// TASK 8
+exports.getAllReviews = (req, res, next) => {
+  fetchAllReviews()
+    .then((data) => {
+      res.status(200).send({ reviews: data });
     })
     .catch((err) => {
       next(err);
