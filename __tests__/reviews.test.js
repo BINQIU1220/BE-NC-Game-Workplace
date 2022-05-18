@@ -135,7 +135,7 @@ describe("GET /api/reviews", () => {
       .then(({ body }) => {
         expect(body.reviews).toBeInstanceOf(Array);
         expect(body.reviews).toHaveLength(13);
-        expect(body.reviews).toBeSortedBy("created_at");
+        expect(body.reviews).toBeSortedBy("created_at", { descending: true });
         body.reviews.forEach((review) => {
           expect(review).toMatchObject({
             owner: expect.any(String),
