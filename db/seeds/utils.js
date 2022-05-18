@@ -24,7 +24,7 @@ exports.formatComments = (comments, idLookup) => {
   });
 };
 
-exports.checkIdExists = (table, column, value) => {
+exports.checkValExists = (table, column, value) => {
   const queryStr = format(
     `SELECT * 
 	  FROM %I 

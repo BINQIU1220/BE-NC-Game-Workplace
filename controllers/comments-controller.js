@@ -1,13 +1,13 @@
 const { fetchCommenstById } = require("../models/comments-model");
 
-const { checkIdExists } = require("../db/seeds/utils");
+const { checkValExists } = require("../db/seeds/utils");
 
 // TASK 9
 exports.getCommentsById = (req, res, next) => {
   const id = req.params.review_id;
   const promises = [
     fetchCommenstById(id),
-    checkIdExists("reviews", "review_id", id),
+    checkValExists("reviews", "review_id", id),
   ];
   return Promise.all(promises)
     .then((data) => {
