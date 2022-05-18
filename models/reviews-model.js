@@ -4,7 +4,7 @@ const db = require("../db/connection.js");
 exports.fetchReviewById = (id) => {
   return db
     .query(
-      `SELECT reviews.*, COUNT(reviews.review_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id WHERE reviews.review_id = ${id} GROUP BY reviews.review_id;`
+      `SELECT reviews.*, COUNT(comments.review_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id WHERE reviews.review_id = ${id} GROUP BY reviews.review_id;`
     )
     .then((data) => {
       if (!data.rows.length) {
@@ -25,5 +25,16 @@ exports.updateVotesById = (reviewId, incVotes) => {
         return Promise.reject({ status: 404, msg: "Not Found" });
       }
       return data.rows[0];
+    });
+};
+
+// TASK 8
+exports.fetchAllReviews = () => {
+  return db
+    .query(
+      `SELECT owner, title,  reviews.review_id, category,  review_img_url, reviews.created_at, reviews.votes, COUNT(comments.review_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id GROUP BY reviews.review_id ORDER BY reviews.created_at ASC;`
+    )
+    .then((data) => {
+      return data.rows;
     });
 };
