@@ -56,3 +56,11 @@ it("status: 400, responds with invalid request message when passed in invalid id
       expect(res.body.msg).toBe("Bad Request");
     });
 });
+it("status: 400, responds with 'Bad Path' message when passed in an incorrect request.", () => {
+  return request(app)
+    .get("/api/comments")
+    .expect(400)
+    .then((res) => {
+      expect(res.body.msg).toBe("Bad Path");
+    });
+});
