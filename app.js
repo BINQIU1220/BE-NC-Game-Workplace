@@ -9,7 +9,10 @@ const {
   getAllReviews,
 } = require("./controllers/reviews-controller");
 
-const { getCommentsById } = require("./controllers/comments-controller");
+const {
+  getCommentsById,
+  postCommentsById,
+} = require("./controllers/comments-controller");
 
 const { getAllUsers } = require("./controllers/users-controller");
 
@@ -33,6 +36,9 @@ app.get("/api/reviews", getAllReviews);
 // TASK 9
 app.get("/api/reviews/:review_id/comments", getCommentsById);
 
+// TASK 10
+app.post("/api/reviews/:review_id/comments", postCommentsById);
+
 //Bad Path Error
 app.all("/*", (req, res, next) => {
   res.status(400).send({ msg: "Bad Path" });
@@ -45,9 +51,21 @@ app.use((err, req, res, next) => {
   } else next(err);
 });
 
+app.use((err, req, res, next) => {
+  if (err.code === "22P02") {
+    res.status(400).send({ msg: "Bad Request" });
+  } else next(err);
+});
+
 //Custom Errors
 app.use((err, req, res, next) => {
-  res.status(404).send({ msg: err.msg });
+  if (err.status === 404) {
+    res.status(404).send({ msg: err.msg });
+  } else next(err);
+});
+
+app.use((err, req, res, next) => {
+  res.status(400).send({ msg: err.msg });
 });
 
 module.exports = app;
