@@ -29,9 +29,10 @@ exports.patchVotesById = (req, res, next) => {
     });
 };
 
-// TASK 8
+// TASK 8 and 11
 exports.getAllReviews = (req, res, next) => {
-  fetchAllReviews()
+  const { sort_by, order, category } = req.query;
+  fetchAllReviews(sort_by, order, category)
     .then((data) => {
       res.status(200).send({ reviews: data });
     })

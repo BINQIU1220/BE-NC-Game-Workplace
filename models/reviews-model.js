@@ -28,13 +28,54 @@ exports.updateVotesById = (reviewId, incVotes) => {
     });
 };
 
-// TASK 8
-exports.fetchAllReviews = () => {
-  return db
-    .query(
-      `SELECT owner, title,  reviews.review_id, category,  review_img_url, reviews.created_at, reviews.votes, COUNT(comments.review_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id GROUP BY reviews.review_id ORDER BY reviews.created_at DESC;`
-    )
-    .then((data) => {
-      return data.rows;
-    });
+// TASK 8 and 11
+exports.fetchAllReviews = (
+  sort_by = "created_at",
+  order = "DESC",
+  category
+) => {
+  const validSortBy = [
+    "category",
+    "title",
+    "created_at",
+    "votes",
+    "owner",
+    "review_id",
+    "comment_count",
+  ];
+
+  const validCategories = [
+    "euro game",
+    "dexterity",
+    "social deduction",
+    "children's games",
+  ];
+
+  let queryStr = `SELECT owner, title, reviews.review_id, category,  review_img_url, reviews.created_at, reviews.votes, COUNT(comments.review_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id`;
+
+  if (category) {
+    if (validCategories.includes(category)) {
+      if (category.includes("'")) {
+        category = category.replace("'", "''");
+      }
+      queryStr += ` WHERE category = '${category}'`;
+    } else {
+      return Promise.reject({ status: 404, msg: "Not Found" });
+    }
+  }
+  if (validSortBy.includes(sort_by)) {
+    if (order === "ASC" || order === "asc") {
+      queryStr += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ASC;`;
+    } else if (order === "DESC" || order === "desc") {
+      queryStr += ` GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`;
+    } else {
+      return Promise.reject({ status: 400, msg: "Bad Request" });
+    }
+  } else {
+    return Promise.reject({ status: 400, msg: "Bad Request" });
+  }
+
+  return db.query(queryStr).then((data) => {
+    return data.rows;
+  });
 };
