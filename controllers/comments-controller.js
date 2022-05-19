@@ -31,13 +31,12 @@ exports.postCommentsById = (req, res, next) => {
   const newComment = req.body;
 
   const promises = [
-    checkValExists("reviews", "review_id", id),
     checkValExists("reviews", "owner", req.body.username),
     insertCommentsById(id, newComment),
   ];
   return Promise.all(promises)
     .then((data) => {
-      res.status(201).send({ comment: data[2] });
+      res.status(201).send({ comment: data[1] });
     })
     .catch((err) => {
       next(err);
