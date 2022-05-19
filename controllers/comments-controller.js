@@ -30,13 +30,10 @@ exports.postCommentsById = (req, res, next) => {
   const id = req.params.review_id;
   const newComment = req.body;
 
-  const promises = [
-    checkValExists("reviews", "owner", req.body.username),
-    insertCommentsById(id, newComment),
-  ];
+  const promises = [insertCommentsById(id, newComment)];
   return Promise.all(promises)
     .then((data) => {
-      res.status(201).send({ comment: data[1] });
+      res.status(201).send({ comment: data[0] });
     })
     .catch((err) => {
       next(err);
