@@ -42,11 +42,4 @@ exports.postCommentsById = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-  // insertCommentsById(id, newComment)
-  //   .then((data) => {
-  //     res.status(201).send({ comment: data });
-  //   })
-  //   .catch((err) => {
-  //     next(err);
-  //   });
 };
