@@ -58,3 +58,107 @@ it("status: 400, responds with invalid request message when passed in invalid id
       expect(res.body.msg).toBe("Bad Request");
     });
 });
+
+// TASK 10
+describe("POST /api/reviews/:review_id/comments", () => {
+  it("status:201: responds with the newly posted comment of the corresponding review ID", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "banana",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 7,
+            body: "banana",
+            votes: 0,
+            author: "bainesface",
+            review_id: 1,
+          })
+        );
+      });
+  });
+  it("status:201: responds with the newly posted comment of the corresponding review ID and igore extra properties in the input", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "banana",
+      XZ_58: "pineapple",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 7,
+            body: "banana",
+            votes: 0,
+            author: "bainesface",
+            review_id: 1,
+          })
+        );
+      });
+  });
+  it("status 400: responds with message 'Bad Request' when no input is passed in", () => {
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  it("status 400: responds with message 'Bad Request' when passed in input does not contain both mandatory keys", () => {
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send({ body: "Banana" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  it("status 404: responds with message 'Not Found' when passed in an ID without review", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "banana",
+    };
+    return request(app)
+      .post("/api/reviews/666/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  it("status 400: responds with message 'Bad Request' when passed in an invalid ID", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "banana",
+    };
+    return request(app)
+      .post("/api/reviews/banana/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  it("status 404: responds with message 'Not Found' when a user not in the database tries to post", () => {
+    const newComment = {
+      username: "Banana",
+      body: "I love pineapple!",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+});

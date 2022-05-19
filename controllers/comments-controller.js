@@ -1,4 +1,7 @@
-const { fetchCommenstById } = require("../models/comments-model");
+const {
+  fetchCommenstById,
+  insertCommentsById,
+} = require("../models/comments-model");
 
 const { checkValExists } = require("../db/seeds/utils");
 
@@ -16,6 +19,21 @@ exports.getCommentsById = (req, res, next) => {
       } else {
         res.status(200).send({ comments: data[0] });
       }
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+// TASK 10
+exports.postCommentsById = (req, res, next) => {
+  const id = req.params.review_id;
+  const newComment = req.body;
+
+  const promises = [insertCommentsById(id, newComment)];
+  return Promise.all(promises)
+    .then((data) => {
+      res.status(201).send({ comment: data[0] });
     })
     .catch((err) => {
       next(err);
