@@ -82,6 +82,28 @@ describe("POST /api/reviews/:review_id/comments", () => {
         );
       });
   });
+  it("status:201: responds with the newly posted comment of the corresponding review ID and igore extra properties in the input", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "banana",
+      XZ_58: "pineapple",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 7,
+            body: "banana",
+            votes: 0,
+            author: "bainesface",
+            review_id: 1,
+          })
+        );
+      });
+  });
   it("status 400: responds with message 'Bad Request' when no input is passed in", () => {
     return request(app)
       .post("/api/reviews/1/comments")
