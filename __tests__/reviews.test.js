@@ -235,7 +235,6 @@ describe("GET /api/reviews", () => {
         expect(body.msg).toBe("Not Found");
       });
   });
-  // the below user error with category name can be elimited in the future by refactoring code to convert all input letters to lowercase
   it("status:404, responds with 'Not Found' message when passed in an existing category but written in uppercase letters", () => {
     return request(app)
       .get("/api/reviews?category=Euro Game")
@@ -261,3 +260,7 @@ describe("GET /api/reviews", () => {
       });
   });
 });
+
+//the error with whitespaces could be elimited in the future by refactoring code to reduce whitespaces to only one
+
+//the error with upper-or-lowercase could be elimited in the future by refactoring code to convert all input letters to lowercase when the values in the column are all lowercases
