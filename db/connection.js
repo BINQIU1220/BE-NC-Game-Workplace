@@ -11,6 +11,8 @@ const config =
       }
     : {};
 
+module.exports = new Pool(config);
+
 require("dotenv").config({
   path: `${__dirname}/../.env.${ENV}`,
 });
