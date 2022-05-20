@@ -208,7 +208,7 @@ describe("GET /api/reviews", () => {
       .get(`/api/reviews?category=children's games`)
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews).toEqual([]);
+        expect(body).toEqual([]);
       });
   });
   it("status:400, responds with 'Bad Path' message when passed in an incorrect request.", () => {

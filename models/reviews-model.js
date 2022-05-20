@@ -1,5 +1,7 @@
 const db = require("../db/connection.js");
 
+const { checkValExists } = require("../db/seeds/utils");
+
 // TASK 4
 exports.fetchReviewById = (id) => {
   return db
@@ -44,25 +46,22 @@ exports.fetchAllReviews = (
     "comment_count",
   ];
 
-  const validCategories = [
-    "euro game",
-    "dexterity",
-    "social deduction",
-    "children's games",
-  ];
+  // const validCategories = [
+  //   "euro game",
+  //   "dexterity",
+  //   "social deduction",
+  //   "children's games",
+  // ];
 
   let queryStr = `SELECT owner, title, reviews.review_id, category,  review_img_url, reviews.created_at, reviews.votes, COUNT(comments.review_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id`;
 
-  if (category) {
-    if (validCategories.includes(category)) {
-      if (category.includes("'")) {
-        category = category.replace("'", "''");
-      }
-      queryStr += ` WHERE category = '${category}'`;
-    } else {
-      return Promise.reject({ status: 404, msg: "Not Found" });
+  if (category !== undefined) {
+    if (category.includes("'")) {
+      category = category.replace("'", "''");
     }
+    queryStr += ` WHERE category = '${category}'`;
   }
+
   if (validSortBy.includes(sort_by)) {
     if (order === "ASC" || order === "asc") {
       queryStr += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ASC;`;
