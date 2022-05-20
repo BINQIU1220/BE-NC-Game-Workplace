@@ -30,7 +30,7 @@ app.patch("/api/reviews/:review_id", patchVotesById);
 // TASK 6
 app.get("/api/users", getAllUsers);
 
-// TASK 8
+// TASK 8 and 11
 app.get("/api/reviews", getAllReviews);
 
 // TASK 9

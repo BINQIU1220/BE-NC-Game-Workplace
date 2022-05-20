@@ -126,31 +126,92 @@ describe("PATCH /api/reviews/:review_id", () => {
   });
 });
 
-// TASK 8
+// TASK 8 and 11
 describe("GET /api/reviews", () => {
-  it("Status: 200, respondes with a reviews array of review objects, each of which should have the required properties and be sorted by date in descending order.", () => {
+  it("status:200, responds an array of reviews with default order and sort.", () => {
     return request(app)
-      .get("/api/reviews")
+      .get("/api/reviews/")
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews).toBeInstanceOf(Array);
         expect(body.reviews).toHaveLength(13);
         expect(body.reviews).toBeSortedBy("created_at", { descending: true });
         body.reviews.forEach((review) => {
-          expect(review).toMatchObject({
-            owner: expect.any(String),
-            title: expect.any(String),
-            review_id: expect.any(Number),
-            category: expect.any(String),
-            review_img_url: expect.any(String),
-            created_at: expect.any(String),
-            votes: expect.any(Number),
-            comment_count: expect.any(String),
-          });
+          expect(review).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              owner: expect.any(String),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+              title: expect.any(String),
+              review_img_url: expect.any(String),
+              category: expect.any(String),
+              comment_count: expect.any(String),
+            })
+          );
         });
       });
   });
-  it("status: 400, responds with 'Bad Path' message when passed in an incorrect request.", () => {
+  it("status:200, responds an array of reviews sorted by comment_count", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=comment_count")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeSortedBy("comment_count", {
+          descending: true,
+        });
+      });
+  });
+  it("status:200, respondes with reviews filtered by category queried", () => {
+    return request(app)
+      .get(`/api/reviews?category=euro game`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toHaveLength(1);
+        expect(body.reviews[0].category).toBe("euro game");
+      });
+  });
+  it("status:200, respondes with reviews sorted by comment_count ACS", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=comment_count&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toBeSortedBy("comment_count", {
+          ascending: true,
+        });
+      });
+  });
+  it("status:200, respondes with reviews filtered by category sorted by comment_count ACS", () => {
+    return request(app)
+      .get(
+        "/api/reviews?category=social deduction&order=asc&sort_by=comment_count"
+      )
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeInstanceOf(Array);
+        expect(body.reviews).toHaveLength(11);
+        expect(body.reviews).toBeSortedBy("comment_count", {
+          ascending: true,
+        });
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              category: "social deduction",
+            })
+          );
+        });
+      });
+  });
+  it("status:200, responds with an empty array when filtered by category queired that doesn not have matching reviews", () => {
+    return request(app)
+      .get(`/api/reviews?category=children's games`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual([]);
+      });
+  });
+  it("status:400, responds with 'Bad Path' message when passed in an incorrect request.", () => {
     return request(app)
       .get("/api/reviewsssssss")
       .expect(400)
@@ -158,4 +219,48 @@ describe("GET /api/reviews", () => {
         expect(res.body.msg).toBe("Bad Path");
       });
   });
+  it("status:404, responds with 'Not Found' message when passed in a non-existing category", () => {
+    return request(app)
+      .get("/api/reviews?category=banana")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  it("status:404, responds with 'Not Found' message when passed in an existing category but with typo", () => {
+    return request(app)
+      .get("/api/reviews?category=euro  game")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  it("status:404, responds with 'Not Found' message when passed in an existing category but written in uppercase letters", () => {
+    return request(app)
+      .get("/api/reviews?category=Euro Game")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  it("status:400, responds with 'Bad Request' message when passed in an invalid sort_by", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  it("status:400, responds with 'Bad Request' message when passed in an invalid order", () => {
+    return request(app)
+      .get("/api/reviews?order=banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
 });
+
+//the error with whitespaces could be elimited in the future by refactoring code to reduce whitespaces to only one
+
+//the error with upper-or-lowercase could be elimited in the future by refactoring code to convert all input letters to lowercase when the values in the column are all lowercases
