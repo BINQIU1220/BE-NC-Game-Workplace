@@ -1,6 +1,7 @@
 const {
   fetchCommenstById,
   insertCommentsById,
+  removeComment,
 } = require("../models/comments-model");
 
 const { checkValExists } = require("../db/seeds/utils");
@@ -34,6 +35,24 @@ exports.postCommentsById = (req, res, next) => {
   return Promise.all(promises)
     .then((data) => {
       res.status(201).send({ comment: data[0] });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+// TASK 12
+exports.deleteCommentById = (req, res, next) => {
+  const id = req.params.comment_id;
+
+  const promises = [
+    removeComment(id),
+    checkValExists("comments", "comment_id", id),
+  ];
+
+  return Promise.all(promises)
+    .then(() => {
+      res.status(204).send();
     })
     .catch((err) => {
       next(err);

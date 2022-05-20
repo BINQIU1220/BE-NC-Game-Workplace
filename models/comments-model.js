@@ -25,3 +25,8 @@ exports.insertCommentsById = (id, newComment) => {
       return data.rows[0];
     });
 };
+
+// TASK 12
+exports.removeComment = (id) => {
+  return db.query(`DELETE FROM comments WHERE comment_id = ${id};`);
+};

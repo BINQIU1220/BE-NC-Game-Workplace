@@ -12,6 +12,7 @@ const {
 const {
   getCommentsById,
   postCommentsById,
+  deleteCommentById,
 } = require("./controllers/comments-controller");
 
 const { getAllUsers } = require("./controllers/users-controller");
@@ -39,6 +40,9 @@ app.get("/api/reviews/:review_id/comments", getCommentsById);
 // TASK 10
 app.post("/api/reviews/:review_id/comments", postCommentsById);
 
+// TASK 12
+app.delete("/api/comments/:comment_id", deleteCommentById);
+
 //Bad Path Error
 app.all("/*", (req, res, next) => {
   res.status(400).send({ msg: "Bad Path" });
@@ -46,7 +50,7 @@ app.all("/*", (req, res, next) => {
 
 // PSQL Errors
 app.use((err, req, res, next) => {
-  if (err.code === "42703" || err.code === "22P02") {
+  if (err.code === "42703" || err.code === "22P02" || err.code === "42601") {
     res.status(400).send({ msg: "Bad Request" });
   } else if (err.code === "23503") {
     res.status(404).send({ msg: "Not Found" });
