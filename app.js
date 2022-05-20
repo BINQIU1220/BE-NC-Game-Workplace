@@ -15,6 +15,8 @@ const {
   deleteCommentById,
 } = require("./controllers/comments-controller");
 
+const { getAllEndpoints } = require("./controllers/api-controller");
+
 const { getAllUsers } = require("./controllers/users-controller");
 
 app.use(express.json());
@@ -42,6 +44,9 @@ app.post("/api/reviews/:review_id/comments", postCommentsById);
 
 // TASK 12
 app.delete("/api/comments/:comment_id", deleteCommentById);
+
+// TASK 13
+app.get("/api", getAllEndpoints);
 
 //Bad Path Error
 app.all("/*", (req, res, next) => {
