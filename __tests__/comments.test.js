@@ -162,3 +162,34 @@ describe("POST /api/reviews/:review_id/comments", () => {
       });
   });
 });
+
+// TASK 12
+describe("DELETE /api/comments/:comment_id", () => {
+  it("status:204, responds with 204 status code", () => {
+    return request(app).delete("/api/comments/2").expect(204);
+  });
+  it("status 404: responds with 'Not Found' when passed a comment ID without comments", () => {
+    return request(app)
+      .delete("/api/comments/666")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  it("status:400, responds with 'Bad Request' when passed an invalid ID", () => {
+    return request(app)
+      .delete("/api/comments/banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  it.only("status:400, responds with 'Bad Request' when passed more than one ID", () => {
+    return request(app)
+      .delete("/api/comments/3 4")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+});
