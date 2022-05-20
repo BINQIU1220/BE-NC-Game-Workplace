@@ -4,12 +4,12 @@
   "description": "bc-nc-games",
   "main": "index.js",
   "scripts": {
+    "start": "node listen.js",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
     "prepare": "husky install",
     "dev": "nodemon ./app.js",
-    "start": "node listen.js",
     "seed-prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed"
   },
   "repository": {
@@ -30,11 +30,11 @@
     "jest-extended": "^2.0.0",
     "jest-sorted": "^1.0.14",
     "nodemon": "^2.0.16",
-    "pg-format": "^1.0.4"
+    "pg": "^8.7.3",
+    "pg-format": "^1.0.4",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.0",
-    "pg": "^8.7.3",
     "supertest": "^6.2.3"
   },
   "jest": {
