@@ -7,7 +7,6 @@ describe("GET /api", () => {
       .get("/api")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.releasedEndpoints).toHaveProperty("GET /api");
         expect(body.releasedEndpoints).toHaveProperty("GET /api/categories");
         expect(body.releasedEndpoints).toHaveProperty("GET /api/reviews");
