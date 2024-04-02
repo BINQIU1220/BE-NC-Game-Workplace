@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 const { getAllCatogories } = require("./controllers/categories-controller");
 
@@ -19,6 +20,7 @@ const { getAllEndpoints } = require("./controllers/api-controller");
 
 const { getAllUsers } = require("./controllers/users-controller");
 
+app.use(cors());
 app.use(express.json());
 
 // TASK 3
