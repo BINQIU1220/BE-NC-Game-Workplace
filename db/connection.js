@@ -13,9 +13,15 @@ const config =
           rejectUnauthorized: false,
         },
       }
-    : {};
+    : {
+        user: process.env.PG_USER,
+        host: process.env.PG_HOST,
+        database: process.env.PG_DATABASE,
+        password: process.env.PG_PASSWORD,
+        port: process.env.PG_PORT,
+      };
 
-if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
+if (!process.env.PG_DATABASE && !process.env.DATABASE_URL) {
   throw new Error("PGDATABASE or DATABASE_URL not set");
 }
 

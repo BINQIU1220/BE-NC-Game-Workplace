@@ -184,7 +184,7 @@ describe("DELETE /api/comments/:comment_id", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
-  it.only("status:400, responds with 'Bad Request' when passed more than one ID", () => {
+  it("status:400, responds with 'Bad Request' when passed more than one ID", () => {
     return request(app)
       .delete("/api/comments/3 4")
       .expect(400)

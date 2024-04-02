@@ -1,53 +1,34 @@
-# Northcoders House of Games API
+# Northcoders House of Games API - BIN QIU
 
-## Background
+See how it works live here:
 
-We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimic the building of a real world backend service (such as reddit) which should provide this information to the front end architecture.
+https://be-nc-games-workplace.onrender.com/api/
 
-Your database will be PSQL, and you will interact with it using [node-postgres](https://node-postgres.com/).
+## Introduction
 
-## Set up your own .env files before
+Welcome! This is a backend service project of the Northcoders Bootcamp. It provides several endpoints for users to interact with database to retrieve and/or post reviews and comments etc. Clients can also add serveral queries to filter or order the result. The project is build with express, node-postgres and tested with TDD using Jest.
 
-You will need to create two .env files when you clone this rep: .env.test and .env.development in order to successfully connect to the two databases locally. Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment (see /db/setup.sql for the database names). Double check that these .env files are .gitignored :).
+Prerequisite -
 
-## Git Branching and Pull Requests
+**Node.js: v18.2.0 & above required.**
 
-You will be working on each ticket on a new **branch**.
+**Postgres: v12.9 & above required.**
 
-To create and switch to a new git branch use the command:
+## Clone & Setup
 
-```
-git checkout -b <new branch name>
-```
+1. Use Github _fork_ and _clone_ to copy the repo into your local desired directory.
+2. Run **npm install** to install all the required dependencies for the code to run in your machine.
 
-This will create a branch and move over to that branch. (Omit the `-b` flag if you wish to switch to an already existing branch).
+## Connect to Database and Seeding on Your Local Computer
 
-We recommend that you name the branch after the number assigned to each ticket via the header. eg. `ncnews-1`
+1. You will need to create two `Environment Variables` files: `.env.test` and `.env.development` in order to successfully connect to the two databases locally for development and test purposes. Into each, add `PG_DATABASE=<database_name_here>` and other configurations, which you can find examples in `.env_example` file (see /db/setup.sql for the default database names). Double check that these .env.\* files are .git ignored :).
+2. Run **npm run setup-dbs** in the terminal to create the Database.
+3. Run **npm run seed** to seed the Database.
 
-When pushing the branch to git hub ensure that you make reference to the branch you are pushing to on the remote.
+The project should be now ready to run on your local machine.
 
-```
-git push origin <branch name>
-```
+## Test
 
-From github you can make a pull request and share the link and ticket number via a pull request specific nchelp using the command `nchelp pr`. A tutor will swing by to review your code. Ensure that you keep your trello up to date whilst you await the PR approval. Regular `nchelp` will be available for when you need support.
+Run **npm t test_file_name** to test each api functionality. You can find the test files in the `__test__`directory.
 
-Once a pull request been accepted be sure to switch back to the main branch and pull down the updated changes.
-
-```
-git checkout main
-
-git pull origin main
-```
-
-You can tidy up your local branches once they have been pull into main by deleting them:
-
-```
-git branch -D <local branch>
-```
-
-## Husky
-
-To ensure we are not commiting broken code this project makes use of git hooks. Git hooks are scripts triggered during certain events in the git lifecycle. Husky is a popular package which allows us to set up and maintain these scripts. This project makes use a _pre-commit hook_. When we attempt to commit our work, the script defined in the `pre-commit` file will run. If any of our tests fail than the commit will be aborted.
-
-The [Husky documentation](https://typicode.github.io/husky/#/) explains how to configure Husky for your own project as well as creating your own custom hooks.\_
+OBs: Run **npm run start** before if you want test it with your browser or `Insomnia` or `Postman`.
