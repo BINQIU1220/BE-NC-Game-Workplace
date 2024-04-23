@@ -1,4 +1,5 @@
 const db = require("../db/connection.js");
+const bcrypt = require("bcrypt");
 
 // TASK 6
 exports.fetchAllUsers = () => {
@@ -8,6 +9,7 @@ exports.fetchAllUsers = () => {
 };
 
 //add register functionality
+const saltRounds = 10;
 
 exports.userSignup = async (req, res) => {
   const username = req.body.username;
@@ -30,11 +32,17 @@ exports.userSignup = async (req, res) => {
     } else if (checkResultUsername.rows.length > 0) {
       res.send("Username already exists. Try logging in.");
     } else {
-      await db.query(
-        "INSERT INTO users (username, name, email, password) VALUES ($1, $2, $3, $4)",
-        [username, name, email, password]
-      );
-      res.send("Success~");
+      bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (err) {
+          console.error("Error hashing password: ", err);
+        } else {
+          await db.query(
+            "INSERT INTO users (username, name, email, password) VALUES ($1, $2, $3, $4)",
+            [username, name, email, hash]
+          );
+          res.send("Success~");
+        }
+      });
     }
   } catch (error) {
     console.log(error);
