@@ -13,19 +13,26 @@ exports.userSignup = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const name = req.body.name;
+  const email = req.body.email;
 
   try {
-    const checkResult = await db.query(
-      "SELECT * FROM users WHERE username = $1",
+    const checkResultUsername = await db.query(
+      "SELECT * FROM users WHERE email = $1",
       [username]
     );
+    const checkResultEmail = await db.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
 
-    if (checkResult.rows.length > 0) {
+    if (checkResultEmail.rows.length > 0) {
+      res.send("Email already exists. Try logging in.");
+    } else if (checkResultUsername.rows.length > 0) {
       res.send("Username already exists. Try logging in.");
     } else {
       await db.query(
-        "INSERT INTO users (username, name, password) VALUES ($1, $2, $3)",
-        [username, name, password]
+        "INSERT INTO users (username, name, email, password) VALUES ($1, $2, $3, $4)",
+        [username, name, email, password]
       );
       res.send("Success~");
     }
