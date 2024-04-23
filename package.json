@@ -4,7 +4,7 @@
   "description": "bc-nc-games",
   "main": "index.js",
   "scripts": {
-    "start": "node listen.js",
+    "start": "nodemon listen.js",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
@@ -31,7 +31,7 @@
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
     "jest-sorted": "^1.0.14",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.22",
     "pg": "^8.7.3",
     "pg-format": "^1.0.4"
   },

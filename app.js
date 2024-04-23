@@ -20,6 +20,8 @@ const { getAllEndpoints } = require("./controllers/api-controller");
 
 const { getAllUsers } = require("./controllers/users-controller");
 
+const { userSignup } = require("./models/users-model");
+
 app.use(cors());
 app.use(express.json());
 
@@ -49,6 +51,10 @@ app.delete("/api/comments/:comment_id", deleteCommentById);
 
 // TASK 13
 app.get("/api", getAllEndpoints);
+
+//add register funcionality
+
+app.post("/api/signup", userSignup);
 
 //Bad Path Error
 app.all("/*", (req, res, next) => {
