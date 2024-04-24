@@ -14,12 +14,12 @@ const saltRounds = 10;
 exports.userSignup = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  const name = req.body.name;
+  const avatar_url = req.body.avatar_url;
   const email = req.body.email;
 
   try {
     const checkResultUsername = await db.query(
-      "SELECT * FROM users WHERE email = $1",
+      "SELECT * FROM users WHERE username = $1",
       [username]
     );
     const checkResultEmail = await db.query(
@@ -36,11 +36,11 @@ exports.userSignup = async (req, res) => {
         if (err) {
           console.error("Error hashing password: ", err);
         } else {
-          await db.query(
-            "INSERT INTO users (username, name, email, password) VALUES ($1, $2, $3, $4)",
-            [username, name, email, hash]
+          const newUser = await db.query(
+            "INSERT INTO users (username, avatar_url, email, password) VALUES ($1, $2, $3, $4) RETURNING username, avatar_url",
+            [username, avatar_url, email, hash]
           );
-          res.send("Success~");
+          res.send(newUser);
         }
       });
     }
@@ -66,7 +66,7 @@ exports.userLogin = async (req, res) => {
           console.log(err);
         } else {
           if (result) {
-            res.send("logged in");
+            res.send([user.username, user.avatar_url]);
           } else {
             res.send("Incorrect Password");
           }
